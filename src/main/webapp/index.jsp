@@ -16,12 +16,15 @@
 <header>
     <h2 align="center">图书管理系统</h2>
 </header>
-<form action="index.jsp" method="post" name="login-form">
-    学号<input type="text" name="id" value=""><br>
-    密码<input type="password" name="psw" value=""><br>
-    <input type="button" value="注册" name="register">
-    <input type="submit" value="登录" name="login">
-</form>
+<div style="width:80%;margin: auto">
+    <form action="login.jsp" method="post" name="login-form">
+        学号<input type="text" name="id"><br>
+        密码<input type="password" name="psw"><br>
+        <input type="submit" value="登录" name="login">
+    </form>
+    <form action="register.jsp">
+        <input type="submit" value="注册" name="register">
+    </form>
+</div>
 </body>
-<script src="test.js"></script>
 </html>
