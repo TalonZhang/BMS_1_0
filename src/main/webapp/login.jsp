@@ -36,7 +36,7 @@
         String name = sqlRst.getString("Name");
         // 判断密码是否正确
         if (psw.equals(password)) {
-            response.sendRedirect("loginsuccess.jsp?id=\"" + id + "\"");
+            response.sendRedirect("loginsuccess.jsp?id=" + id);
         }
     } catch (java.sql.SQLException e){
         System.out.println(e.toString());

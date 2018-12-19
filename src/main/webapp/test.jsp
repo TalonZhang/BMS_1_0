@@ -26,25 +26,8 @@
         // 执行 Sql 语句
         String sqlQuery = "select Id,Name from User";
         sqlRst = sqlStmt.executeQuery(sqlQuery);
-%>
-<center>用户列表</center>
-<table border="1" width="80%" >
-    <tr>
-        <td align="center">ID</td>
-        <td align="center">姓名</td>
-    </tr>
-    <% while (sqlRst.next()){ // 获取下一条记录%>
-    <%--显示记录--%>
-    <tr>
-        <td><%=sqlRst.getString("Id") %></td>
-        <td><%=sqlRst.getString("Name") %></td>
-    </tr>
-    <% } %>
-</table>
-<%
     } catch (java.sql.SQLException e){
         System.out.println(e.toString());
-//        out.println(e.toString());
     } finally {
         if (sqlRst!=null) sqlRst.close();
         if (sqlStmt!=null) sqlStmt.close();

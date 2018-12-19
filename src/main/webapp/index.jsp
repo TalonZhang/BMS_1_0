@@ -16,7 +16,7 @@
 <header>
     <h2 align="center">图书管理系统</h2>
 </header>
-<div style="width:80%;margin: auto">
+<div>
     <form action="login.jsp" method="post" name="login-form">
         学号<input type="text" name="id"><br>
         密码<input type="password" name="psw"><br>

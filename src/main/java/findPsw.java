@@ -4,11 +4,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.*;
-import java.security.GeneralSecurityException;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @WebServlet(urlPatterns = "/findPsw")
 public class findPsw extends HttpServlet {
@@ -36,7 +36,7 @@ public class findPsw extends HttpServlet {
             msg.setFrom(new InternetAddress(USERNAME));
 
             msg.setRecipients(Message.RecipientType.BCC, InternetAddress.parse(to));
-            msg.setSubject("重置密码");
+            msg.setSubject("找回密码");
 
             Multipart mp = new MimeMultipart();
             MimeBodyPart mbpContent = new MimeBodyPart();
@@ -65,96 +65,58 @@ public class findPsw extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        sendMail("1026244428@qq.com","hahah");
-//        // 收件人的电子邮件 ID
-//        String to = "1015431793@qq.com";
-//
-//        // 发件人的电子邮件 ID
-//        String from = "1026244428@qq.com";
-//
-//        // 假设您是从本地主机发送电子邮件
-//        String host = "smtp.qq.com";
-//
-//        // 获取系统的属性
-//        Properties properties = System.getProperties();
-//
-//        // wpmvhhbnkggvbdjg
-//        // 设置邮件服务器
-//        properties.setProperty("mail.smtp.host", host);
-//
-//        // 获取默认的 Session 对象
-//        Session session = Session.getDefaultInstance(properties);
-//
-//        // 设置响应内容类型
-//        resp.setContentType("text/html;charset=UTF-8");
-//        PrintWriter out = resp.getWriter();
-//
-//        try{
-//            // 创建一个默认的 MimeMessage 对象
-//            MimeMessage message = new MimeMessage(session);
-//            // 设置 From: header field of the header.
-//            message.setFrom(new InternetAddress(from));
-//            // 设置 To: header field of the header.
-//            message.addRecipient(Message.RecipientType.TO,
-//                    new InternetAddress(to));
-//            // 设置 Subject: header field
-//            message.setSubject("This is the Subject Line!");
-//            // 现在设置实际消息
-//            message.setText("This is actual message");
-//            // 发送消息
-//            Transport.send(message);
-//            String title = "发送电子邮件";
-//            String res = "成功发送消息...";
-//            String docType = "<!DOCTYPE html> \n";
-//            out.println(docType +
-//                    "<html>\n" +
-//                    "<head><title>" + title + "</title></head>\n" +
-//                    "<body bgcolor=\"#f0f0f0\">\n" +
-//                    "<h1 align=\"center\">" + title + "</h1>\n" +
-//                    "<p align=\"center\">" + res + "</p>\n" +
-//                    "</body></html>");
-//        }catch (MessagingException mex) {
-//            mex.printStackTrace();
-//        }
-//        try {
-//            Properties props = new Properties();
-//
-//            // 开启debug调试
-//            props.setProperty("mail.debug", "true");
-//            // 发送服务器需要身份验证
-//            props.setProperty("mail.smtp.auth", "true");
-//            // 设置邮件服务器主机名
-//            props.setProperty("mail.host", "smtp.qq.com");
-//            // props.setProperty("mail.port", "465");
-//            // 发送邮件协议名称
-//            props.setProperty("mail.transport.protocol", "smtp");
-//
-//
-//            Session session = Session.getInstance(props);
-//
-//            Message msg = new MimeMessage(session);
-//            msg.setSubject("邮件服务");
-//            StringBuilder builder = new StringBuilder();
-//            //            builder.append("url = " + "http://blog.csdn.net/never_cxb/article/details/50524571");
-//            builder.append("\nhello qxl from ryan");
-//            builder.append("\n时间 " + new Date());
-//            msg.setText(builder.toString());
-//            msg.setFrom(new InternetAddress("1026244428@qq.com"));
-//
-//            Transport transport = session.getTransport();
-//            transport.connect("smtp.qq.com", "1026244428@qq.com", "tingnichangge.");
-//
-//            transport.sendMessage(msg, new Address[] { new InternetAddress("zhangkanghao@imudges.com") });
-//
-//            transport.close();
-//
-//        } catch (MessagingException e) {
-//            e.printStackTrace();
-//        }
-//
-//        req.setAttribute("message", "邮件上传成功");
-//        req.getServletContext().getRequestDispatcher("/mailSendSucc.jsp").forward(req, resp);
-//
+        // 获取参数
+        String id = req.getParameter("id");
+        String email = req.getParameter("email");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        java.sql.Connection conn = null;
+        java.lang.String strConn;
+        java.sql.Statement sqlStmt = null;
+        java.sql.ResultSet sqlRst = null;
+        try {
+            conn = java.sql.DriverManager.getConnection("jdbc:mysql://47.93.216.105/BMDB", "root", "991216");
+            sqlStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            // 执行 Sql 语句
+            String sqlQuery = "select Name,Psw from User where Id = " + id;
+            sqlRst = sqlStmt.executeQuery(sqlQuery);
+            sqlRst.next();
+            String password = sqlRst.getString("Psw");
+            String name = sqlRst.getString("Name");
+
+            // 发送邮件
+            sendMail(email,"你好，"+name+"。你的密码为："+password);
+        } catch (java.sql.SQLException e){
+            System.out.println(e.toString());
+        } finally {
+            if (sqlRst!=null) {
+                try {
+                    sqlRst.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (sqlStmt!=null) {
+                try {
+                    sqlStmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        resp.sendRedirect("index.jsp");
+
     }
 
 }
