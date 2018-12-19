@@ -44,6 +44,8 @@
     </tr>
     <%}%>
     </table>
+    <%--将当前用户 ID 传给 servlet--%>
+    <input type="hidden" name="id" value=<%=id%>>
     <input type="submit" value="提交">
 </form>
 <%

@@ -25,6 +25,9 @@
     <form action="register.jsp">
         <input type="submit" value="注册" name="register">
     </form>
+    <form action="findpsw.jsp">
+        <input type="submit" value="找回密码" name="findpsw">
+    </form>
 </div>
 </body>
 </html>
