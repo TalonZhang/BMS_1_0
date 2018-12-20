@@ -34,7 +34,7 @@
         sqlRst = sqlStmt.executeQuery(sqlQuery);
 %>
 欢迎!<br>
-可选图书：<<br>
+可选图书：<br>
 <form name="book" action="addBook" method="post">
     <table>
     <%while (sqlRst.next()) {%>

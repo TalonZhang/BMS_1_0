@@ -55,6 +55,7 @@
 <% String url2 = "delBook.jsp?id="+id;%>
 <a href=<%=url1%>><button>添加图书</button></a>
 <a href=<%=url2%>><button>删除图书</button></a>
+<a href="index.jsp"><button>退出登录</button></a>
 <%
     } catch (java.sql.SQLException e){
         System.out.println(e.toString());
