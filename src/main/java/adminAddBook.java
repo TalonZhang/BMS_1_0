@@ -33,7 +33,7 @@ public class adminAddBook extends HttpServlet {
         java.sql.Statement sqlStmt = null;
         try {
 
-            conn = java.sql.DriverManager.getConnection("jdbc:mysql://47.93.216.105/BMDB", "root", "991216");
+            conn = java.sql.DriverManager.getConnection("jdbc:mysql://47.93.216.105/BMDB", "root", "");
             sqlStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 
             // 执行 Sql 语句 插入已选书籍
