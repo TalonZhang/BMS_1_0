@@ -13,9 +13,9 @@ import java.sql.SQLException;
 @WebServlet(urlPatterns = "/findPsw")
 public class findPsw extends HttpServlet {
 
-    public static final String HOST ="smtp.likole.com";
-    public static final String USERNAME ="homeworkManager@likole.com";
-    public static final String PASSWORD ="sFByrf6mnhPe1sYw";
+    public static final String HOST ="";
+    public static final String USERNAME ="";
+    public static final String PASSWORD ="";
 
     public static boolean sendMail(String to, String content) {
 
@@ -78,8 +78,8 @@ public class findPsw extends HttpServlet {
         java.lang.String strConn;
         java.sql.Statement sqlStmt = null;
         java.sql.ResultSet sqlRst = null;
-        try {
-            conn = java.sql.DriverManager.getConnection("jdbc:mysql://47.93.216.105/BMDB", "root", "991216");
+        try 
+            conn = java.sql.DriverManager.getConnection("jdbc:mysql://47.93.216.105/BMDB", "root", "");
             sqlStmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             // 执行 Sql 语句
             String sqlQuery = "select Name,Psw from User where Id = " + id;
